@@ -1,10 +1,11 @@
 import React, { useContext, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid';
+import { ADD_TODO } from '../reducers/Types';
 import { ThemeContext } from './contexts/ThemeContext';
 import { TodosContext } from './contexts/TodoContext';
 
 const TodoForm = () => {
-    const { addTodo } = useContext(TodosContext)
+    const { dispatch } = useContext(TodosContext)
     const { theme } = useContext(ThemeContext)
     const { isLightTheme, light, dark } = theme;
     const [title, setTitle] = useState('')
@@ -13,7 +14,12 @@ const TodoForm = () => {
     }
     const handleSubmit = event => {
         event.preventDefault()
-        addTodo({ id: uuidv4(), title })
+        dispatch({
+            type: ADD_TODO,
+            payload: {
+                todo: { id: uuidv4(), title }
+            }
+        })
         setTitle('')
     }
     const styles = isLightTheme ? light : dark;
